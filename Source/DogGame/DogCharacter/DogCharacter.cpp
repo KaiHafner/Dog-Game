@@ -53,11 +53,13 @@ void ADogCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	}
 
 	if (UEnhancedInputComponent* Input = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
+		//WASD actions binded
 		Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADogCharacter::Move);
+		//CAMERA actions binded
 		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADogCharacter::Look);
+		//Jump action binded
 		Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ADogCharacter::Jump);
-
-		//Sprinting actions binded
+		//SPRINTING actions binded
 		Input->BindAction(SprintAction, ETriggerEvent::Started, this, &ADogCharacter::Sprint);
 		Input->BindAction(SprintAction, ETriggerEvent::Completed, this, &ADogCharacter::Walk);
 	}
@@ -83,8 +85,10 @@ void ADogCharacter::Move(const FInputActionValue& InputValue)
 
 void ADogCharacter::Look(const FInputActionValue& InputValue)
 {
+	//Gets X, Y
 	FVector2D InputVector = InputValue.Get<FVector2D>();
 
+	//Applies Yaw and Pitch
 	if (IsValid(Controller)) {
 		AddControllerYawInput(InputVector.X);
 		AddControllerPitchInput(InputVector.Y);
@@ -100,11 +104,14 @@ void ADogCharacter::Jump()
 //Sprinting
 void ADogCharacter::Sprint()
 {
+	//Setting MaxWalkSpeed to SprintSpeed
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 }
 
+//Walking
 void ADogCharacter::Walk()
 {
+	//Settings MaxWalkSpeed to walkSpeed
 	GetCharacterMovement()->MaxWalkSpeed = walkSpeed;
 }
 
