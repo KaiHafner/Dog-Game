@@ -30,6 +30,9 @@ protected:
 	UPROPERTY(EditAnywhere, category = "EnhancedInput")
 	class UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, category = "EnhancedInput")
+	class UInputAction* SprintAction;
+
 public:
 	// Sets default values for this character's properties
 	ADogCharacter();
@@ -46,8 +49,13 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
+	float walkSpeed = 175.0f;
+	float SprintSpeed = 350.0f;
+
 	void Move(const FInputActionValue& InputValue);
 	void Look(const FInputActionValue& InputValue);
 	void Jump();
+	void Sprint();
+	void Walk();
 };
 

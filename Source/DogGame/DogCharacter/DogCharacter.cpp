@@ -56,6 +56,10 @@ void ADogCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADogCharacter::Move);
 		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADogCharacter::Look);
 		Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ADogCharacter::Jump);
+
+		//Sprinting actions binded
+		Input->BindAction(SprintAction, ETriggerEvent::Started, this, &ADogCharacter::Sprint);
+		Input->BindAction(SprintAction, ETriggerEvent::Completed, this, &ADogCharacter::Walk);
 	}
 }
 
@@ -91,6 +95,17 @@ void ADogCharacter::Look(const FInputActionValue& InputValue)
 void ADogCharacter::Jump()
 {
 	ACharacter::Jump();
+}
+
+//Sprinting
+void ADogCharacter::Sprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+void ADogCharacter::Walk()
+{
+	GetCharacterMovement()->MaxWalkSpeed = walkSpeed;
 }
 
 
