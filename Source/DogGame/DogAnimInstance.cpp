@@ -21,5 +21,4 @@ void UDogAnimInstance::NativeUpdateAnimation(float DeltaTime)
 	Speed = Velocity.Size();
 
 	isJumping = DogCharacter->GetCharacterMovement()->IsFalling();
-	//bIsInputAccelerating = DogCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
 }

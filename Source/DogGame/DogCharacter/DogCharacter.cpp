@@ -99,8 +99,6 @@ void ADogCharacter::Look(const FInputActionValue& InputValue)
 void ADogCharacter::Jump()
 {
 	ACharacter::Jump();
-	//bIsJumping = true;
-	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, ("Jumping"));
 }
 
 //Sprinting
