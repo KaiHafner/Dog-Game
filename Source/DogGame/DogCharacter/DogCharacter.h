@@ -10,6 +10,26 @@ class DOGGAME_API ADogCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* Camera;
+
+	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
+	class USpringArmComponent* SpringArm;
+
+protected:
+
+	UPROPERTY(EditAnywhere, category = "EnhancedInput")
+	class UInputMappingContext* InputMapping;
+
+	UPROPERTY(EditAnywhere, category = "EnhancedInput")
+	class UInputAction* MoveAction;
+
+	UPROPERTY(EditAnywhere, category = "EnhancedInput")
+	class UInputAction* JumpAction;
+
+	UPROPERTY(EditAnywhere, category = "EnhancedInput")
+	class UInputAction* LookAction;
+
 public:
 	// Sets default values for this character's properties
 	ADogCharacter();
@@ -26,13 +46,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-
-	UPROPERTY(EditAnywhere, category = "EnhancedInput")
-	class UInputMappingContext* InputMapping;
-
-	UPROPERTY(EditAnywhere, Category = "EnhancedInput")
-	class UInputAction* TestAction;
-
-	void TestInput();
+	void Move(const FInputActionValue& InputValue);
+	void Look(const FInputActionValue& InputValue);
+	void Jump();
 };
 
