@@ -51,6 +51,7 @@ public:
 protected:
 	float walkSpeed = 175.0f;
 	float SprintSpeed = 350.0f;
+	bool bIsJumping;
 
 	void Move(const FInputActionValue& InputValue);
 	void Look(const FInputActionValue& InputValue);

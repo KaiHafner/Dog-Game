@@ -23,9 +23,8 @@ public:
 	float Speed;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	float bIsInAir;
+	bool isJumping;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	float bIsInputAccelerating;
-
+	//UPROPERTY(BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	//float bIsInputAccelerating;
 };
