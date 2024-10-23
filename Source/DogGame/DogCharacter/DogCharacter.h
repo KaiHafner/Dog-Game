@@ -33,6 +33,9 @@ protected:
 	UPROPERTY(EditAnywhere, category = "EnhancedInput")
 	class UInputAction* SprintAction;
 
+	UPROPERTY(EditAnywhere, category = "EnhancedInput")
+	class UInputAction* TrickAction;
+
 public:
 	// Sets default values for this character's properties
 	ADogCharacter();
@@ -58,5 +61,6 @@ protected:
 	void Jump();
 	void Sprint();
 	void Walk();
+	void Trick();
 };
 

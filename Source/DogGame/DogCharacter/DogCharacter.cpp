@@ -115,6 +115,11 @@ void ADogCharacter::Walk()
 	GetCharacterMovement()->MaxWalkSpeed = walkSpeed;
 }
 
+void ADogCharacter::Trick()
+{
+
+}
+
 
 
 
