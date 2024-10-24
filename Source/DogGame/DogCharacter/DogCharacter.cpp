@@ -62,6 +62,8 @@ void ADogCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		//SPRINTING actions binded
 		Input->BindAction(SprintAction, ETriggerEvent::Started, this, &ADogCharacter::Sprint);
 		Input->BindAction(SprintAction, ETriggerEvent::Completed, this, &ADogCharacter::Walk);
+
+		Input->BindAction(TrickAction, ETriggerEvent::Triggered, this, &ADogCharacter::Trick);
 	}
 }
 
@@ -117,7 +119,11 @@ void ADogCharacter::Walk()
 
 void ADogCharacter::Trick()
 {
-
+	if (TrickMontage)
+	{
+		// Play the montage on the dog's mesh
+		PlayAnimMontage(TrickMontage);
+	}
 }
 
 

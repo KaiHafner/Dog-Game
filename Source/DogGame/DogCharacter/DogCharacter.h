@@ -33,8 +33,12 @@ protected:
 	UPROPERTY(EditAnywhere, category = "EnhancedInput")
 	class UInputAction* SprintAction;
 
-	UPROPERTY(EditAnywhere, category = "EnhancedInput")
+	UPROPERTY(EditAnywhere, Category = "EnhancedInput")
 	class UInputAction* TrickAction;
+
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	class UAnimMontage* TrickMontage;
+
 
 public:
 	// Sets default values for this character's properties
