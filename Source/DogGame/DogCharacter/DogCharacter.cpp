@@ -27,6 +27,7 @@ ADogCharacter::ADogCharacter()
 void ADogCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	LastTrickTime = -TrickCooldownTime; //removes cooldown from beginning
 	
 }
 
