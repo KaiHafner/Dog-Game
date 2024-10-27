@@ -17,7 +17,7 @@ class DOGGAME_API ADogCharacter : public ACharacter
 	class USpringArmComponent* SpringArm;
 
 protected:
-
+	//Enhanced Inputs
 	UPROPERTY(EditAnywhere, category = "EnhancedInput")
 	class UInputMappingContext* InputMapping;
 
@@ -36,9 +36,18 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "EnhancedInput")
 	class UInputAction* TrickAction;
 
+protected:
+	//Animations
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	class UAnimMontage* TrickMontage;
 
+protected:
+	//Trick Cooldown
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cooldown")
+	float TrickCooldownTime = 3.0f; // Set your desired cooldown time
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Cooldown")
+	float LastTrickTime = 0.0f; // Time of last trick performed
 
 public:
 	// Sets default values for this character's properties

@@ -63,7 +63,7 @@ void ADogCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		Input->BindAction(SprintAction, ETriggerEvent::Started, this, &ADogCharacter::Sprint);
 		Input->BindAction(SprintAction, ETriggerEvent::Completed, this, &ADogCharacter::Walk);
 
-		Input->BindAction(TrickAction, ETriggerEvent::Triggered, this, &ADogCharacter::Trick);
+		Input->BindAction(TrickAction, ETriggerEvent::Started, this, &ADogCharacter::Trick);
 	}
 }
 
@@ -119,10 +119,26 @@ void ADogCharacter::Walk()
 
 void ADogCharacter::Trick()
 {
-	if (TrickMontage)
+	float CurrentTime = GetWorld()->GetTimeSeconds();
+
+	// Check if the cooldown has expired
+	if (CurrentTime - LastTrickTime >= TrickCooldownTime)
 	{
-		// Play the montage on the dog's mesh
-		PlayAnimMontage(TrickMontage);
+		if (TrickMontage)
+		{
+			// Play the montage on the dog's mesh
+			PlayAnimMontage(TrickMontage);
+		}
+
+		// Update the last trick time
+		LastTrickTime = CurrentTime;
+	}
+	else
+	{
+		//Outputs cooldown
+		float TimeLeft = TrickCooldownTime - (CurrentTime - LastTrickTime);
+		FString CooldownMessage = FString::Printf(TEXT("Trick on cooldown! Time left: %.1f seconds"), TimeLeft);
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, CooldownMessage);
 	}
 }
 
