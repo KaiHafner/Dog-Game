@@ -10,6 +10,10 @@ class DOGGAME_API ADogCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+	FTimerHandle TrickTimerHandle; // Timer handle for resetting speed
+
+	void ResetSpeed(); // Function to reset speed after trick
+
 	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* Camera;
 
@@ -67,7 +71,9 @@ public:
 protected:
 	float walkSpeed = 175.0f;
 	float SprintSpeed = 350.0f;
+	float trickSpeed = 0.0f;
 	bool bIsJumping;
+	bool bIsTrick;
 
 	void Move(const FInputActionValue& InputValue);
 	void Look(const FInputActionValue& InputValue);

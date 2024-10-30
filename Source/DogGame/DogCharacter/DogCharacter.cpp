@@ -108,7 +108,10 @@ void ADogCharacter::Jump()
 void ADogCharacter::Sprint()
 {
 	//Setting MaxWalkSpeed to SprintSpeed
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	if (!bIsTrick) 
+	{
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	}
 }
 
 //Walking
@@ -127,8 +130,11 @@ void ADogCharacter::Trick()
 	{
 		if (TrickMontage)
 		{
-			// Play the montage on the dog's mesh
+			bIsTrick = true;
 			PlayAnimMontage(TrickMontage);
+			GetCharacterMovement()->MaxWalkSpeed = trickSpeed;
+			// Set a timer to reset speed after the trick is done
+			GetWorld()->GetTimerManager().SetTimer(TrickTimerHandle, this, &ADogCharacter::ResetSpeed, TrickMontage->GetPlayLength(), false);
 		}
 
 		// Update the last trick time
@@ -143,6 +149,8 @@ void ADogCharacter::Trick()
 	}
 }
 
-
-
-
+void ADogCharacter::ResetSpeed()
+{
+	GetCharacterMovement()->MaxWalkSpeed = walkSpeed;
+	bIsTrick = false;
+}
