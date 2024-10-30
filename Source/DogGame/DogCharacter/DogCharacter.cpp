@@ -12,13 +12,16 @@ ADogCharacter::ADogCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//Setup spring arm component
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("Spring Arm");
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->bUsePawnControlRotation = true;
 
+	//Setuup camera component
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
 
+	//Character rotation settings
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 }
@@ -27,7 +30,7 @@ ADogCharacter::ADogCharacter()
 void ADogCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	LastTrickTime = -TrickCooldownTime; //removes cooldown from beginning
+	LastTrickTime = -TrickCooldownTime; //removes trick cooldown from beginning
 	
 }
 
@@ -54,16 +57,12 @@ void ADogCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	}
 
 	if (UEnhancedInputComponent* Input = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
-		//WASD actions binded
+		//Movement Bindings
 		Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADogCharacter::Move);
-		//CAMERA actions binded
 		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADogCharacter::Look);
-		//Jump action binded
 		Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ADogCharacter::Jump);
-		//SPRINTING actions binded
 		Input->BindAction(SprintAction, ETriggerEvent::Started, this, &ADogCharacter::Sprint);
 		Input->BindAction(SprintAction, ETriggerEvent::Completed, this, &ADogCharacter::Walk);
-
 		Input->BindAction(TrickAction, ETriggerEvent::Started, this, &ADogCharacter::Trick);
 	}
 }
@@ -73,10 +72,9 @@ void ADogCharacter::Move(const FInputActionValue& InputValue)
 	FVector2D InputVector = InputValue.Get<FVector2D>();
 
 	if (IsValid(Controller)) {
-		//Get Forward Direction
+		//Get forward and right direction based on controller rotation
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator yawRotation(0, Rotation.Yaw, 0);
-
 		const FVector ForwardDirection = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X);
 		const FVector RightDirection = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y);
 
@@ -91,14 +89,15 @@ void ADogCharacter::Look(const FInputActionValue& InputValue)
 	//Gets X, Y
 	FVector2D InputVector = InputValue.Get<FVector2D>();
 
-	//Applies Yaw and Pitch
 	if (IsValid(Controller)) {
+		//Applies Yaw and Pitch
 		AddControllerYawInput(InputVector.X);
 		AddControllerPitchInput(InputVector.Y);
 	}
 
 }
 
+//Jumping
 void ADogCharacter::Jump()
 {
 	ACharacter::Jump();
@@ -117,8 +116,11 @@ void ADogCharacter::Sprint()
 //Walking
 void ADogCharacter::Walk()
 {
-	//Settings MaxWalkSpeed to walkSpeed
-	GetCharacterMovement()->MaxWalkSpeed = walkSpeed;
+	if (!bIsTrick)
+	{
+		//Settings MaxWalkSpeed to walkSpeed
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	}
 }
 
 void ADogCharacter::Trick()
@@ -132,7 +134,7 @@ void ADogCharacter::Trick()
 		{
 			bIsTrick = true;
 			PlayAnimMontage(TrickMontage);
-			GetCharacterMovement()->MaxWalkSpeed = trickSpeed;
+			GetCharacterMovement()->MaxWalkSpeed = TrickSpeed;
 			// Set a timer to reset speed after the trick is done
 			GetWorld()->GetTimerManager().SetTimer(TrickTimerHandle, this, &ADogCharacter::ResetSpeed, TrickMontage->GetPlayLength(), false);
 		}
@@ -151,6 +153,6 @@ void ADogCharacter::Trick()
 
 void ADogCharacter::ResetSpeed()
 {
-	GetCharacterMovement()->MaxWalkSpeed = walkSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 	bIsTrick = false;
 }

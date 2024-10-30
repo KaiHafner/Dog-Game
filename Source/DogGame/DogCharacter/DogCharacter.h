@@ -8,12 +8,28 @@
 UCLASS()
 class DOGGAME_API ADogCharacter : public ACharacter
 {
+
 	GENERATED_BODY()
 
-	FTimerHandle TrickTimerHandle; // Timer handle for resetting speed
+private:
+	// Speed Variables
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float WalkSpeed = 175.0f;
 
-	void ResetSpeed(); // Function to reset speed after trick
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float SprintSpeed = 350.0f;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	float TrickSpeed = 0.0f;
+
+	// Jump and Trick Flags
+	bool bIsJumping = false;
+	bool bIsTrick = false;
+
+	// Trick Timer
+	FTimerHandle TrickTimerHandle;
+
+	//Camera Components
 	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* Camera;
 
@@ -40,12 +56,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "EnhancedInput")
 	class UInputAction* TrickAction;
 
-protected:
 	//Animations
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	class UAnimMontage* TrickMontage;
 
-protected:
 	//Trick Cooldown
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cooldown")
 	float TrickCooldownTime = 3.0f; // Set your desired cooldown time
@@ -69,17 +83,15 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-	float walkSpeed = 175.0f;
-	float SprintSpeed = 350.0f;
-	float trickSpeed = 0.0f;
-	bool bIsJumping;
-	bool bIsTrick;
-
+	//Movement and action functions
 	void Move(const FInputActionValue& InputValue);
 	void Look(const FInputActionValue& InputValue);
 	void Jump();
 	void Sprint();
 	void Walk();
 	void Trick();
+
+	//Helper Functions
+	void ResetSpeed();
 };
 
