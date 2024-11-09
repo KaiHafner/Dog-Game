@@ -6,9 +6,14 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
+#include "DogGame/ScentTracking.h"
+
 // Sets default values
 ADogCharacter::ADogCharacter()
 {
+	ScentTracking = CreateDefaultSubobject<UScentTracking>(TEXT("ScentTrackingComponent"));
+	ScentTracking->SetupAttachment(RootComponent);
+
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -64,6 +69,7 @@ void ADogCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		Input->BindAction(SprintAction, ETriggerEvent::Started, this, &ADogCharacter::Sprint);
 		Input->BindAction(SprintAction, ETriggerEvent::Completed, this, &ADogCharacter::Walk);
 		Input->BindAction(TrickAction, ETriggerEvent::Started, this, &ADogCharacter::Trick);
+		Input->BindAction(TrackAction, ETriggerEvent::Started, this, &ADogCharacter::Track);
 	}
 }
 
@@ -149,6 +155,12 @@ void ADogCharacter::Trick()
 		FString CooldownMessage = FString::Printf(TEXT("Trick on cooldown! Time left: %.1f seconds"), TimeLeft);
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, CooldownMessage);
 	}
+}
+
+void ADogCharacter::Track()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "E pressed");
+	ScentTracking;
 }
 
 void ADogCharacter::ResetSpeed()

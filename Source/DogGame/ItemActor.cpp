@@ -8,6 +8,8 @@ AItemActor::AItemActor()
 
     // Create and attach the ItemScentComponent
     ItemScent = CreateDefaultSubobject<UItemScent>(TEXT("ItemScentComponent"));
+    ItemScent->SetupAttachment(RootComponent);
+
 }
 
 // Called when the game starts or when spawned

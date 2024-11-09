@@ -6,7 +6,7 @@
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class DOGGAME_API UItemScent : public UActorComponent
+class DOGGAME_API UItemScent : public USceneComponent
 {
 	GENERATED_BODY()
 

@@ -3,12 +3,14 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "DogGame/ScentTracking.h"
+
 #include "DogCharacter.generated.h"
+
 
 UCLASS()
 class DOGGAME_API ADogCharacter : public ACharacter
 {
-
 	GENERATED_BODY()
 
 private:
@@ -56,6 +58,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "EnhancedInput")
 	class UInputAction* TrickAction;
 
+	UPROPERTY(EditAnywhere, Category = "EnhancedInput")
+	class UInputAction* TrackAction;
+
 	//Animations
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	class UAnimMontage* TrickMontage;
@@ -70,6 +75,10 @@ protected:
 public:
 	// Sets default values for this character's properties
 	ADogCharacter();
+
+	//Scent Tracking
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UScentTracking* ScentTracking;
 
 protected:
 	// Called when the game starts or when spawned
@@ -90,6 +99,7 @@ protected:
 	void Sprint();
 	void Walk();
 	void Trick();
+	void Track();
 
 	//Helper Functions
 	void ResetSpeed();

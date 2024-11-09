@@ -8,7 +8,7 @@
 class ADogCharacter;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class DOGGAME_API UScentTracking : public UActorComponent
+class DOGGAME_API UScentTracking : public USceneComponent
 {
 	GENERATED_BODY()
 
@@ -24,10 +24,9 @@ public:
 	void StartScentTracking(); // Start tracking scents
 	void StopScentTracking();  // Stop tracking scents
 
-	
+	bool bIsTracking; 	       // Is the player actively tracking scents?
 
 private:
-	bool bIsTracking;         // Is the player actively tracking scents?
 
 	TArray<UItemScent*> ItemScents;  // List of scents to track
 

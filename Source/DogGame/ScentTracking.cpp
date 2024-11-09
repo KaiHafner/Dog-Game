@@ -12,8 +12,6 @@ UScentTracking::UScentTracking()
 	bIsTracking = false;
 }
 
-
-// Called when the game starts
 void UScentTracking::BeginPlay()
 {
 	Super::BeginPlay();
@@ -35,7 +33,6 @@ void UScentTracking::BeginPlay()
 void UScentTracking::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
     if (bIsTracking)
     {
         FindClosestScent();
@@ -78,6 +75,9 @@ void UScentTracking::FindClosestScent()
     {
         CurrentDirection = ClosestScent->ScentLocation - PlayerLocation;
         CurrentDirection.Normalize();
+
+        FString DebugMessage = FString::Printf(TEXT("Closest Scent Item Distance: %f"), ClosestDistance);
+        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, DebugMessage);
     }
 }
 
