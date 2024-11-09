@@ -2,7 +2,7 @@
 #include "ItemScent.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
-#include "DogCharacter.generated.h"
+#include "DogCharacter/DogCharacter.h"
 
 #include <Kismet/GameplayStatics.h>
 
@@ -59,7 +59,6 @@ void UScentTracking::FindClosestScent()
     float ClosestDistance = FLT_MAX;
     UItemScent* NewClosestScent = nullptr;
 
-    // Loop through all ItemScent components and find the closest one
     for (UItemScent* ScentComponent : ItemScents)
     {
         if (ScentComponent)
@@ -73,8 +72,9 @@ void UScentTracking::FindClosestScent()
         }
     }
 
-    // If a scent is found, update the direction to it
-    if (ClosestScent = NewClosestScent)
+    ClosestScent = NewClosestScent;
+
+    if (ClosestScent)
     {
         CurrentDirection = ClosestScent->ScentLocation - PlayerLocation;
         CurrentDirection.Normalize();

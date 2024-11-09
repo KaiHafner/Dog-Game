@@ -3,8 +3,9 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "ItemScent.h"
-
 #include "ScentTracking.generated.h"
+
+class ADogCharacter;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class DOGGAME_API UScentTracking : public UActorComponent
