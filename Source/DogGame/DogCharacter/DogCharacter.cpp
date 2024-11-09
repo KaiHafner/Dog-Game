@@ -69,7 +69,9 @@ void ADogCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		Input->BindAction(SprintAction, ETriggerEvent::Started, this, &ADogCharacter::Sprint);
 		Input->BindAction(SprintAction, ETriggerEvent::Completed, this, &ADogCharacter::Walk);
 		Input->BindAction(TrickAction, ETriggerEvent::Started, this, &ADogCharacter::Trick);
+
 		Input->BindAction(TrackAction, ETriggerEvent::Started, this, &ADogCharacter::Track);
+
 	}
 }
 
@@ -159,8 +161,16 @@ void ADogCharacter::Trick()
 
 void ADogCharacter::Track()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "E pressed");
-	ScentTracking;
+	if (!bIsTracking)
+	{
+		bIsTracking = true;
+		ScentTracking->StartScentTracking();
+	}
+	else if (bIsTracking)
+	{
+		bIsTracking = false;
+		ScentTracking->StopScentTracking();
+	}
 }
 
 void ADogCharacter::ResetSpeed()

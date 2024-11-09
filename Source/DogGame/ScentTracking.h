@@ -24,7 +24,7 @@ public:
 	void StartScentTracking(); // Start tracking scents
 	void StopScentTracking();  // Stop tracking scents
 
-	bool bIsTracking; 	       // Is the player actively tracking scents?
+	bool bIsTracking = false; 	       // Is the player actively tracking scents?
 
 private:
 

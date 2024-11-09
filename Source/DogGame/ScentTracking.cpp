@@ -9,7 +9,6 @@
 UScentTracking::UScentTracking()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	bIsTracking = false;
 }
 
 void UScentTracking::BeginPlay()
@@ -69,15 +68,15 @@ void UScentTracking::FindClosestScent()
         }
     }
 
+    FString DebugMessage = FString::Printf(TEXT("Closest Scent Item Distance: %f"), ClosestDistance);
+    GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, DebugMessage);
+
     ClosestScent = NewClosestScent;
 
     if (ClosestScent)
     {
         CurrentDirection = ClosestScent->ScentLocation - PlayerLocation;
         CurrentDirection.Normalize();
-
-        FString DebugMessage = FString::Printf(TEXT("Closest Scent Item Distance: %f"), ClosestDistance);
-        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, DebugMessage);
     }
 }
 

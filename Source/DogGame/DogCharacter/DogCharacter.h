@@ -27,6 +27,7 @@ private:
 	// Jump and Trick Flags
 	bool bIsJumping = false;
 	bool bIsTrick = false;
+	bool bIsTracking = false;
 
 	// Trick Timer
 	FTimerHandle TrickTimerHandle;
@@ -100,6 +101,8 @@ protected:
 	void Walk();
 	void Trick();
 	void Track();
+
+	
 
 	//Helper Functions
 	void ResetSpeed();
