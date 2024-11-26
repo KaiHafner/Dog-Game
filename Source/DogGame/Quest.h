@@ -21,7 +21,7 @@ class DOGGAME_API UQuest : public UObject
     GENERATED_BODY()
 
 public:
-    // Quest properties
+    //Quest properties
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Quest")
     FString QuestName;
 
