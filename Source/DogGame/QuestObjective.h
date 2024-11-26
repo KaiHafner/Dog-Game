@@ -4,6 +4,9 @@
 #include "UObject/NoExportTypes.h"
 #include "QuestObjective.generated.h"
 
+
+class UQuest;
+
 UCLASS(Blueprintable)
 class DOGGAME_API UQuestObjective : public UObject
 {

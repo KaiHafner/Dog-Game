@@ -8,6 +8,7 @@ void UQuestTrackerWidget::UpdateUI(UQuest* ActiveQuest)
     {
         QuestNameText->SetText(FText::FromString(ActiveQuest->QuestName));
         QuestDescriptionText->SetText(FText::FromString(ActiveQuest->QuestDescription));
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ACTIVE"));
     }
     else
     {

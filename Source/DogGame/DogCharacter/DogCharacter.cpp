@@ -8,6 +8,7 @@
 
 #include "DogGame/ScentTracking.h"
 
+
 // Sets default values
 ADogCharacter::ADogCharacter()
 {
