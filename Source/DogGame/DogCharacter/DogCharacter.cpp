@@ -70,8 +70,7 @@ void ADogCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		Input->BindAction(SprintAction, ETriggerEvent::Completed, this, &ADogCharacter::Walk);
 		Input->BindAction(TrickAction, ETriggerEvent::Started, this, &ADogCharacter::Trick);
 
-		Input->BindAction(TrackAction, ETriggerEvent::Started, this, &ADogCharacter::Track);
-
+		Input->BindAction(TrackAction, ETriggerEvent::Completed, this, &ADogCharacter::Track);
 	}
 }
 
