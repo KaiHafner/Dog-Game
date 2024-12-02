@@ -8,8 +8,6 @@ AQuestGiver::AQuestGiver()
 {
     PrimaryActorTick.bCanEverTick = false;
 
-    PrimaryActorTick.bCanEverTick = false;
-
     // Initialize the collision sphere component
     CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionSphere"));
     CollisionSphere->SetupAttachment(RootComponent);  // Attach it to the root component

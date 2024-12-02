@@ -37,7 +37,6 @@ void ADogCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	LastTrickTime = -TrickCooldownTime; //removes trick cooldown from beginning
-	
 }
 
 // Called every frame
