@@ -1,8 +1,25 @@
 #include "QuestManager.h"
+#include "QuestTrackerWidget.h"
 
 UQuestManager::UQuestManager()
 {
     PrimaryComponentTick.bCanEverTick = false;
+}
+
+void UQuestManager::BeginPlay() 
+{
+    if (QuestTrackerWidgetClass) 
+    {
+        APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+        if (PlayerController)
+        {
+            QuestTrackerWidget = CreateWidget<UQuestTrackerWidget>(PlayerController, QuestTrackerWidgetClass);
+            if (QuestTrackerWidget)
+            {
+                QuestTrackerWidget->AddToViewport();
+            }
+        }
+    }
 }
 
 void UQuestManager::AddQuest(UQuest* Quest)
@@ -12,6 +29,11 @@ void UQuestManager::AddQuest(UQuest* Quest)
         GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("Adding Quest: ") + Quest->QuestName);
         ActiveQuests.Add(Quest);
         Quest->Status = EQuestStatus::InProgress;
+
+        if (QuestTrackerWidget)
+        {
+            QuestTrackerWidget->UpdateUI(Quest);
+        }
     }
     else 
     {
