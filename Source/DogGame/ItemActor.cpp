@@ -1,5 +1,6 @@
 #include "ItemActor.h"
 #include "ItemScent.h" 
+#include "Quest.h"
 
 
 AItemActor::AItemActor()

@@ -4,8 +4,7 @@
 #include "UObject/NoExportTypes.h"
 #include "Quest.generated.h"
 
-UENUM(BlueprintType)
-enum class EQuestStatus : uint8
+UENUM(BlueprintType)enum class EQuestStatus : uint8
 {
     NotStarted UMETA(DisplayName = "Not Started"),
     InProgress UMETA(DisplayName = "In Progress"),
