@@ -28,6 +28,7 @@ public:
 
 	bool bIsTracking = false; //chekck iss tracking
 
+
 private:
 
 	TArray<UItemScent*> ItemScents; //List of scents to track
@@ -35,19 +36,21 @@ private:
 	UItemScent* ClosestScent;
 	FVector CurrentDirection; //Direction towards the closest scent
 
-	void UpdateScentDirection(); //Update the direction vector
-	//void SpawnTrailEffect();
 	void FindClosestScent();
+	void UpdateScentDirection();
 	void CreatePathToScent();
 
+	void RecreatePath();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Visual")
 	UNiagaraSystem* TrailNiagaraEffect;
 
-	// Configuration for the trail
+	//Config the trail 
 	UPROPERTY(EditDefaultsOnly, Category = "Visual")
-	int32 NumTrailPoints = 20;  // Number of points along the path
+	int32 NumTrailPoints = 1000;  //Max Number of points
 
 	UPROPERTY(EditDefaultsOnly, Category = "Visual")
-	float TrailPointSpacing = 50.0f;  // Distance between trail points
+	float TrailPointSpacing = 100.0f;  //Distance between trail points
+
+	FTimerHandle PathUpdateTimerHandle;
 };
