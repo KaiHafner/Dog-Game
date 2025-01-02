@@ -29,7 +29,10 @@ protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
+    void RotateToFacePlayer(AActor* PlayerActor);
+
 private:
+
     // Handle when another actor overlaps with the sphere
     UFUNCTION()
     void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
