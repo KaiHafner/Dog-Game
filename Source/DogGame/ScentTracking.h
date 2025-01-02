@@ -21,18 +21,18 @@ protected:
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void StartScentTracking(); // Start tracking scents
-	void StopScentTracking();  // Stop tracking scents
+	void StartScentTracking(); //Start tracking scents
+	void StopScentTracking();  //Stop tracking scents
 
-	bool bIsTracking = false; 	       // Is the player actively tracking scents?
+	bool bIsTracking = false; //chekck iss tracking
 
 private:
 
-	TArray<UItemScent*> ItemScents;  // List of scents to track
+	TArray<UItemScent*> ItemScents; //List of scents to track
 
 	UItemScent* ClosestScent;
-	FVector CurrentDirection;  // Direction towards the closest scent
+	FVector CurrentDirection; //Direction towards the closest scent
 
-	void UpdateScentDirection();  // Update the direction vector
-	void FindClosestScent();      // Find the closest scent source	
+	void UpdateScentDirection(); //Update the direction vector
+	void FindClosestScent(); //Find the closest scent source	
 };

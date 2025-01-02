@@ -14,11 +14,11 @@ class DOGGAME_API AQuestGiver : public AActor
 public:
     AQuestGiver();
 
-    // Array of quests that the quest giver can assign
+    //Array of quests that the quest giver can assign
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
     TArray<UQuest*> AvailableQuests;
 
-    // Function to assign a quest to the player
+    //assign a quest to the player
     UFUNCTION(BlueprintCallable, Category = "Quest")
     UQuest* AssignQuest();
 
@@ -26,14 +26,11 @@ public:
     USphereComponent* CollisionSphere;
 
 protected:
-    // Called when the game starts or when spawned
     virtual void BeginPlay() override;
-
     void RotateToFacePlayer(AActor* PlayerActor);
 
 private:
-
-    // Handle when another actor overlaps with the sphere
+    //Handle when Another actor overlaps with the sphere
     UFUNCTION()
     void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
         class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,

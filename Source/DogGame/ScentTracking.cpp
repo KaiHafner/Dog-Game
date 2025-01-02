@@ -85,8 +85,7 @@ void UScentTracking::UpdateScentDirection()
     ADogCharacter* PlayerCharacter = Cast<ADogCharacter>(GetOwner());
     if (PlayerCharacter && ClosestScent)
     {
-        // Example of updating a UI element or visual indicator
-        // You can use CurrentDirection to manipulate an arrow or UI compass
+        //Add the visual thing i want to add here!
     }
 }
 

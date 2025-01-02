@@ -17,15 +17,15 @@ protected:
 public:
     UQuestManager();
 
-    // List of active quests
+    //List of active quests
     UPROPERTY(BlueprintReadWrite, Category = "Quest")
     TArray<UQuest*> ActiveQuests;
 
-    // Add a quest to the active quest list
+    //Ad a quest to the active quest list
     UFUNCTION(BlueprintCallable, Category = "Quest")
     void AddQuest(UQuest* Quest);
 
-    // Check if a quest is complete
+    //Check if a quest is complete
     UFUNCTION(BlueprintCallable, Category = "Quest")
     void CompleteQuest(FString QuestName);
 

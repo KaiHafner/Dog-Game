@@ -13,19 +13,17 @@ AItemActor::AItemActor()
 
 }
 
-// Called when the game starts or when spawned
 void AItemActor::BeginPlay()
 {
 	Super::BeginPlay();
 
     if (ItemScent)
     {
-        ItemScent->ScentStrength = 1.5f; // Example: set a custom scent strength
+        ItemScent->ScentStrength = 1.5f;
     }
 	
 }
 
-// Called every frame
 void AItemActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
