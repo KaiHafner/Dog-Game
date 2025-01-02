@@ -3,7 +3,7 @@
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
 #include "DogCharacter/DogCharacter.h"
-
+#include "NiagaraFunctionLibrary.h"
 #include <Kismet/GameplayStatics.h>
 
 UScentTracking::UScentTracking()
@@ -68,8 +68,21 @@ void UScentTracking::FindClosestScent()
         }
     }
 
-    FString DebugMessage = FString::Printf(TEXT("Closest Scent Item Distance: %f"), ClosestDistance);
-    GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, DebugMessage);
+    if (ClosestDistance >= 1000.0f)
+    {
+        FString DebugMessage = FString::Printf(TEXT("Closest Scent Item Distance: %f"), ClosestDistance);
+        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, DebugMessage);
+    }
+    else if(ClosestDistance >= 500.0f)
+    {
+        FString DebugMessage = FString::Printf(TEXT("Closest Scent Item Distance: %f"), ClosestDistance);
+        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, DebugMessage);
+    }
+    else if (ClosestDistance >= 0.0f)
+    {
+        FString DebugMessage = FString::Printf(TEXT("Closest Scent Item Distance: %f"), ClosestDistance);
+        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, DebugMessage);
+    }
 
     ClosestScent = NewClosestScent;
 
@@ -85,7 +98,43 @@ void UScentTracking::UpdateScentDirection()
     ADogCharacter* PlayerCharacter = Cast<ADogCharacter>(GetOwner());
     if (PlayerCharacter && ClosestScent)
     {
-        //Add the visual thing i want to add here!
+        CreatePathToScent(); // Generate the trail path
+    }
+}
+
+void UScentTracking::CreatePathToScent()
+{
+    if (!TrailNiagaraEffect || !ClosestScent)
+    {
+        return;
+    }
+
+    FVector PlayerLocation = GetOwner()->GetActorLocation();
+    FVector TargetLocation = ClosestScent->ScentLocation;
+
+    FVector PathDirection = (TargetLocation - PlayerLocation).GetSafeNormal(); // Direction vector
+    float TotalDistance = FVector::Dist(PlayerLocation, TargetLocation);
+
+    for (int32 i = 0; i < NumTrailPoints; ++i)
+    {
+        float DistanceAlongPath = i * TrailPointSpacing;
+
+        // Ensure we don't exceed the total distance
+        if (DistanceAlongPath > TotalDistance)
+        {
+            break;
+        }
+
+        // Calculate the position along the path
+        FVector TrailPoint = PlayerLocation + PathDirection * DistanceAlongPath;
+
+        // Spawn the Niagara system at the calculated position
+        UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+            GetWorld(),
+            TrailNiagaraEffect,
+            TrailPoint,
+            FRotator::ZeroRotator
+        );
     }
 }
 

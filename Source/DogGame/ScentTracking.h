@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "ItemScent.h"
+#include "NiagaraSystem.h"
+#include "NiagaraFunctionLibrary.h"
 #include "ScentTracking.generated.h"
 
 class ADogCharacter;
@@ -34,5 +36,18 @@ private:
 	FVector CurrentDirection; //Direction towards the closest scent
 
 	void UpdateScentDirection(); //Update the direction vector
-	void FindClosestScent(); //Find the closest scent source	
+	//void SpawnTrailEffect();
+	void FindClosestScent();
+	void CreatePathToScent();
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "Visual")
+	UNiagaraSystem* TrailNiagaraEffect;
+
+	// Configuration for the trail
+	UPROPERTY(EditDefaultsOnly, Category = "Visual")
+	int32 NumTrailPoints = 20;  // Number of points along the path
+
+	UPROPERTY(EditDefaultsOnly, Category = "Visual")
+	float TrailPointSpacing = 50.0f;  // Distance between trail points
 };
