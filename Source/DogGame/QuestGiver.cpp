@@ -100,31 +100,25 @@ void AQuestGiver::SpawnBlueprintActorRandomly()
 {
     if (!ActorToSpawn)
     {
-        UE_LOG(LogTemp, Warning, TEXT("ActorToSpawn is null! Please assign an actor class in the Blueprint properties."));
         return;
     }
 
     UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
     if (!NavSystem)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Navigation System not found!"));
         return;
     }
 
-    FVector Origin = GetActorLocation();
-    float Radius = 1000.0f; 
-
+    FVector Origin(0.0f, 0.0f, 0.0f); //sets origin
     FNavLocation RandomPoint;
-    if (NavSystem->GetRandomReachablePointInRadius(Origin, Radius, RandomPoint))
+    
+    if (NavSystem->GetRandomReachablePointInRadius(Origin, 5000.0f, RandomPoint))
     {
+        //spawn item at the random spot
         FActorSpawnParameters SpawnParams;
         SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
         GetWorld()->SpawnActor<AActor>(ActorToSpawn, RandomPoint.Location, FRotator::ZeroRotator, SpawnParams);
-        UE_LOG(LogTemp, Log, TEXT("Spawned Actor at: %s"), *RandomPoint.Location.ToString());
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Failed to find a random point in the nav mesh."));
     }
 }
+
