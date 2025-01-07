@@ -3,6 +3,7 @@
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
 #include "DogCharacter/DogCharacter.h"
+#include "NavigationSystem.h"
 #include <Kismet/GameplayStatics.h>
 
 UScentTracking::UScentTracking(): ClosestScent(nullptr), TrailNiagaraEffect(nullptr)
@@ -102,43 +103,84 @@ void UScentTracking::UpdateScentDirection() const
 
 void UScentTracking::CreatePathToScent() const
 {
+    if (!ClosestScent || !TrailNiagaraEffect)
+    {
+        return;
+    }
+
+    //Get the nav system
+    UNavigationSystemV1* NavSys = UNavigationSystemV1::GetCurrent(GetWorld());
+    if (!NavSys)
+    {
+        return;
+    }
+
+    //Get the starting and target locations
     FVector PlayerLocation = GetOwner()->GetActorLocation();
     FVector TargetLocation = ClosestScent->ScentLocation;
 
-    //Direction vector between the player and the target location
-    FVector PathDirection = (TargetLocation - PlayerLocation).GetSafeNormal();
+    //Find a path using the nav mesh
+    FNavAgentProperties NavAgentProps;
+    FPathFindingQuery Query(
+        GetOwner(),
+        *NavSys->GetDefaultNavDataInstance(),
+        PlayerLocation,
+        TargetLocation
+    );
 
-    //Calculate the total distance between player and the target
-    float TotalDistance = FVector::Dist(PlayerLocation, TargetLocation);
+    FPathFindingResult PathResult = NavSys->FindPathSync(NavAgentProps, Query);
 
-    // Ensure we are always generating trail points, even for shorter distances
-    if (TotalDistance < 100.0f)
+    if (!PathResult.IsSuccessful() || !PathResult.Path.IsValid())
     {
-        TotalDistance = 100.0f;
+        return;
     }
 
-    // Increase the number of trail points to cover the distance more effectively
-    for (int32 i = 0; i < NumTrailPoints; ++i)
+    TArray<FNavPathPoint> PathPoints = PathResult.Path->GetPathPoints();
+
+    //Spawn Niagara particles along the path
+    for (int32 i = 0; i < PathPoints.Num(); ++i)
     {
-        //calculate each point along path distance
-        float DistanceAlongPath = i * TrailPointSpacing;
+        constexpr float ParticleHeightOffset = 50.0f; //constexpr determined at compile time 
+        FVector TrailPoint = PathPoints[i].Location;
+        
+        TrailPoint.Z += ParticleHeightOffset; //Particles height offset
 
-        //Caps it at the right distance
-        if (DistanceAlongPath > TotalDistance)
-        {
-            break;
-        }
-
-        //calculate the position along the path
-        FVector TrailPoint = PlayerLocation + PathDirection * DistanceAlongPath;
-
-        //Spawns niagara in spots
+        //Spawn niagara effect
         UNiagaraFunctionLibrary::SpawnSystemAtLocation(
             GetWorld(),
             TrailNiagaraEffect,
             TrailPoint,
             FRotator::ZeroRotator
         );
+
+        //spacing between particles
+        if (i > 0)
+        {
+            FVector PreviousPoint = PathPoints[i - 1].Location;
+            float Distance = FVector::Dist(PreviousPoint, TrailPoint);
+            
+            //Adds missing particles if spacing is too far
+            if (Distance > TrailPointSpacing)
+            {
+                int32 NumIntermediatePoints = FMath::FloorToInt(Distance / TrailPointSpacing);
+                FVector Direction = (TrailPoint - PreviousPoint).GetSafeNormal();
+
+                for (int32 j = 1; j <= NumIntermediatePoints; ++j)
+                {
+                    FVector IntermediatePoint = PreviousPoint + Direction * (j * TrailPointSpacing);
+
+                    //Apply height offset to intermediate points as well
+                    IntermediatePoint.Z += ParticleHeightOffset;
+
+                    UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+                        GetWorld(),
+                        TrailNiagaraEffect,
+                        IntermediatePoint,
+                        FRotator::ZeroRotator
+                    );
+                }
+            }
+        }
     }
 }
 

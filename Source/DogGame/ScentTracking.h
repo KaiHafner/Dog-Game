@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
 #include "ItemScent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "ScentTracking.generated.h"
