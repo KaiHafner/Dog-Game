@@ -73,6 +73,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Cooldown")
 	float LastTrickTime = 0.0f; // Time of last trick performed
 
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Audio")
+	UAudioComponent* SniffAudioComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Audio")
+	USoundBase* sniffSound;
+
 public:
 	// Sets default values for this character's properties
 	ADogCharacter();

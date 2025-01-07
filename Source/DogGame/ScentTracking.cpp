@@ -65,23 +65,25 @@ void UScentTracking::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 void UScentTracking::FindClosestScent()
 {
+    TArray<AActor*> AllActors;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), AllActors);
+
     FVector PlayerLocation = GetOwner()->GetActorLocation();
     float ClosestDistance = FLT_MAX;
-    UItemScent* NewClosestScent = nullptr;
+    ClosestScent = nullptr;
 
-    for (UItemScent* ScentComponent : ItemScents)
+    for (const AActor* Actor : AllActors)
     {
-        if (ScentComponent)
+        if (UItemScent* ScentComponent = Actor->FindComponentByClass<UItemScent>())
         {
             float Distance = FVector::Dist(PlayerLocation, ScentComponent->ScentLocation);
             if (Distance < ClosestDistance)
             {
                 ClosestDistance = Distance;
-                NewClosestScent = ScentComponent;
+                ClosestScent = ScentComponent;
             }
         }
     }
-    ClosestScent = NewClosestScent;
 
     if (ClosestScent)
     {

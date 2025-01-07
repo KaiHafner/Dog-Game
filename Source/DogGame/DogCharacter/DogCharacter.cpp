@@ -3,10 +3,12 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/AudioComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 #include "DogGame/ScentTracking.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -23,6 +25,10 @@ ADogCharacter::ADogCharacter()
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->bUsePawnControlRotation = true;
 
+	SniffAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("SniffAudioComponent"));
+	SniffAudioComponent->SetupAttachment(RootComponent);
+	SniffAudioComponent->bAutoActivate = false; // Don't play automatically
+
 	//Setuup camera component
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
@@ -30,6 +36,8 @@ ADogCharacter::ADogCharacter()
 	//Character rotation settings
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+
+	sniffSound = CreateDefaultSubobject<USoundBase>(TEXT("Sniff Sound"));
 }
 
 // Called when the game starts or when spawned
@@ -164,11 +172,22 @@ void ADogCharacter::Track()
 	{
 		bIsTracking = true;
 		ScentTracking->StartScentTracking();
+
+		if (SniffAudioComponent)
+		{
+			SniffAudioComponent->SetSound(sniffSound);
+			SniffAudioComponent->Play();
+		}
 	}
 	else if (bIsTracking)
 	{
 		bIsTracking = false;
 		ScentTracking->StopScentTracking();
+
+		if (SniffAudioComponent)
+		{
+			SniffAudioComponent->Stop();
+		}
 	}
 }
 

@@ -1,9 +1,13 @@
 #include "QuestGiver.h"
+
+#include "ItemActor.h"
 #include "Engine/World.h"
 #include "DogCharacter/DogCharacter.h"
 #include "QuestManager.h"
 #include "Quest.h"
 #include "GameFramework/PlayerController.h"
+#include "NavigationSystem.h"
+#include "NavMesh/RecastNavMesh.h"
 #include "Kismet/GameplayStatics.h"
 
 AQuestGiver::AQuestGiver()
@@ -57,25 +61,25 @@ UQuest* AQuestGiver::AssignQuest()
     return nullptr; //No quests available
 }
 
-void AQuestGiver::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+void AQuestGiver::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, //This was taken from some random guy online but it works now
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
     bool bFromSweep, const FHitResult& SweepResult)
 {
     ADogCharacter* PlayerCharacter = Cast<ADogCharacter>(OtherActor);
     if (PlayerCharacter)
     {
-        //Rotates player
         RotateToFacePlayer(PlayerCharacter);
-
-        //Get the QuestManager component from the player
+        
         UQuestManager* QuestManager = PlayerCharacter->FindComponentByClass<UQuestManager>();
         if (QuestManager)
         {
             GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "QUEST MANAGER");
+
             //Assign a quest to the player through the QuestManager
             UQuest* NewQuest = AssignQuest();
             if (NewQuest)
             {
+                SpawnBlueprintActorRandomly();
                 GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "QUEST ADDED");
                 QuestManager->AddQuest(NewQuest); 
             }
@@ -90,4 +94,37 @@ void AQuestGiver::RotateToFacePlayer(AActor* PlayerActor)
     Direction.Z = 0;
     FRotator TargetRotation = Direction.Rotation();
     SetActorRotation(TargetRotation);
+}
+
+void AQuestGiver::SpawnBlueprintActorRandomly()
+{
+    if (!ActorToSpawn)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("ActorToSpawn is null! Please assign an actor class in the Blueprint properties."));
+        return;
+    }
+
+    UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+    if (!NavSystem)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Navigation System not found!"));
+        return;
+    }
+
+    FVector Origin = GetActorLocation(); // Adjust as needed
+    float Radius = 1000.0f; // Adjust as needed
+
+    FNavLocation RandomPoint;
+    if (NavSystem->GetRandomReachablePointInRadius(Origin, Radius, RandomPoint))
+    {
+        FActorSpawnParameters SpawnParams;
+        SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+        GetWorld()->SpawnActor<AActor>(ActorToSpawn, RandomPoint.Location, FRotator::ZeroRotator, SpawnParams);
+        UE_LOG(LogTemp, Log, TEXT("Spawned Actor at: %s"), *RandomPoint.Location.ToString());
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Failed to find a random point in the nav mesh."));
+    }
 }
