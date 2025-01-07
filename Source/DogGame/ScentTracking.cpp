@@ -5,9 +5,9 @@
 #include "DogCharacter/DogCharacter.h"
 #include <Kismet/GameplayStatics.h>
 
-UScentTracking::UScentTracking()
+UScentTracking::UScentTracking(): ClosestScent(nullptr), TrailNiagaraEffect(nullptr)
 {
-	PrimaryComponentTick.bCanEverTick = true;
+    PrimaryComponentTick.bCanEverTick = true;
 }
 
 void UScentTracking::BeginPlay()
@@ -17,10 +17,9 @@ void UScentTracking::BeginPlay()
     TArray<AActor*> AllActors;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), AllActors);
 
-    for (AActor* Actor : AllActors)
+    for (const AActor* Actor : AllActors)
     {
-        UItemScent* ScentComponent = Actor->FindComponentByClass<UItemScent>();
-        if (ScentComponent)
+        if (UItemScent* ScentComponent = Actor->FindComponentByClass<UItemScent>())
         {
             ItemScents.Add(ScentComponent);
         }
@@ -90,34 +89,18 @@ void UScentTracking::FindClosestScent()
         CurrentDirection = ClosestScent->ScentLocation - PlayerLocation;
         CurrentDirection.Normalize();
     }
-
-    //if (ClosestDistance >= 1000.0f)
-//{
-//    FString DebugMessage = FString::Printf(TEXT("Closest Scent Item Distance: %f"), ClosestDistance);
-//    GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, DebugMessage);
-//}
-//else if(ClosestDistance >= 500.0f)
-//{
-//    FString DebugMessage = FString::Printf(TEXT("Closest Scent Item Distance: %f"), ClosestDistance);
-//    GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, DebugMessage);
-//}
-//else if (ClosestDistance >= 0.0f)
-//{
-//    FString DebugMessage = FString::Printf(TEXT("Closest Scent Item Distance: %f"), ClosestDistance);
-//    GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, DebugMessage);
-//}
 }
 
-void UScentTracking::UpdateScentDirection()
+void UScentTracking::UpdateScentDirection() const
 {
-    ADogCharacter* PlayerCharacter = Cast<ADogCharacter>(GetOwner());
+    const ADogCharacter* PlayerCharacter = Cast<ADogCharacter>(GetOwner());
     if (PlayerCharacter && ClosestScent)
     {
         CreatePathToScent();
     }
 }
 
-void UScentTracking::CreatePathToScent()
+void UScentTracking::CreatePathToScent() const
 {
     FVector PlayerLocation = GetOwner()->GetActorLocation();
     FVector TargetLocation = ClosestScent->ScentLocation;
@@ -137,7 +120,7 @@ void UScentTracking::CreatePathToScent()
     // Increase the number of trail points to cover the distance more effectively
     for (int32 i = 0; i < NumTrailPoints; ++i)
     {
-        //calcuilate each point along path distance
+        //calculate each point along path distance
         float DistanceAlongPath = i * TrailPointSpacing;
 
         //Caps it at the right distance

@@ -3,7 +3,6 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "ItemScent.h"
-#include "NiagaraSystem.h"
 #include "NiagaraFunctionLibrary.h"
 #include "ScentTracking.generated.h"
 
@@ -30,15 +29,14 @@ public:
 
 
 private:
-
 	TArray<UItemScent*> ItemScents; //List of scents to track
-
 	UItemScent* ClosestScent;
+	
 	FVector CurrentDirection; //Direction towards the closest scent
 
 	void FindClosestScent();
-	void UpdateScentDirection();
-	void CreatePathToScent();
+	void UpdateScentDirection() const;
+	void CreatePathToScent() const;
 
 	void RecreatePath();
 
