@@ -25,8 +25,6 @@ void UScentTracking::BeginPlay()
             ItemScents.Add(ScentComponent);
         }
     }
-
-    //Creates a timer, that repeats every 5 seconds calling to recreate the path
     GetWorld()->GetTimerManager().SetTimer(PathUpdateTimerHandle, this, &UScentTracking::RecreatePath, 5.0f, true);
 }
 
@@ -103,11 +101,11 @@ void UScentTracking::UpdateScentDirection() const
 
 void UScentTracking::CreatePathToScent() const
 {
-    if (!ClosestScent || !TrailNiagaraEffect)
+    if (!ClosestScent || !TrailNiagaraEffect) //KAI DO NOT REMOVE THIS FIXES CRASHES WHEN NO SCENTED OBJECT
     {
-        return;
+        return; //simple fix but slammed head for it....
     }
-
+    
     //Get the nav system
     UNavigationSystemV1* NavSys = UNavigationSystemV1::GetCurrent(GetWorld());
     if (!NavSys)
@@ -130,7 +128,7 @@ void UScentTracking::CreatePathToScent() const
 
     FPathFindingResult PathResult = NavSys->FindPathSync(NavAgentProps, Query);
 
-    if (!PathResult.IsSuccessful() || !PathResult.Path.IsValid())
+    if (!PathResult.IsSuccessful() || !PathResult.Path.IsValid()) //STOPS CRASHES WHEN UNSUCCESSFUL 
     {
         return;
     }
@@ -169,7 +167,7 @@ void UScentTracking::CreatePathToScent() const
                 {
                     FVector IntermediatePoint = PreviousPoint + Direction * (j * TrailPointSpacing);
 
-                    //Apply height offset to intermediate points as well
+                    //Apply height offset to extra points as well
                     IntermediatePoint.Z += ParticleHeightOffset;
 
                     UNiagaraFunctionLibrary::SpawnSystemAtLocation(
