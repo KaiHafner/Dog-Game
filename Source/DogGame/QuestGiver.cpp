@@ -111,8 +111,8 @@ void AQuestGiver::SpawnBlueprintActorRandomly()
         return;
     }
 
-    FVector Origin = GetActorLocation(); // Adjust as needed
-    float Radius = 1000.0f; // Adjust as needed
+    FVector Origin = GetActorLocation();
+    float Radius = 1000.0f; 
 
     FNavLocation RandomPoint;
     if (NavSystem->GetRandomReachablePointInRadius(Origin, Radius, RandomPoint))

@@ -14,7 +14,8 @@ UScentTracking::UScentTracking(): ClosestScent(nullptr), TrailNiagaraEffect(null
 void UScentTracking::BeginPlay()
 {
     Super::BeginPlay();
-
+    bIsTracking = false;
+    
     TArray<AActor*> AllActors;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), AllActors);
 
@@ -25,7 +26,6 @@ void UScentTracking::BeginPlay()
             ItemScents.Add(ScentComponent);
         }
     }
-    GetWorld()->GetTimerManager().SetTimer(PathUpdateTimerHandle, this, &UScentTracking::RecreatePath, 5.0f, true);
 }
 
 void UScentTracking::StopScentTracking()
