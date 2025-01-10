@@ -1,20 +1,17 @@
 #include "QuestGiver.h"
 
-#include "ItemActor.h"
 #include "Engine/World.h"
 #include "DogCharacter/DogCharacter.h"
 #include "QuestManager.h"
 #include "Quest.h"
 #include "GameFramework/PlayerController.h"
 #include "NavigationSystem.h"
-#include "NavMesh/RecastNavMesh.h"
-#include "Kismet/GameplayStatics.h"
 
 AQuestGiver::AQuestGiver()
 {
     PrimaryActorTick.bCanEverTick = false;
 
-    //Initialize the collision sphere component
+    //Initialises the collision sphere component
     CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionSphere"));
     CollisionSphere->SetupAttachment(RootComponent);  //Attach it to the root component
     CollisionSphere->InitSphereRadius(100.f);  //Set the size
@@ -25,7 +22,7 @@ void AQuestGiver::BeginPlay()
 {
     Super::BeginPlay();
 
-    //Creates Quests
+    //Creates Quests (not how I planned but works so sticking with it)
     UQuest* Quest1 = NewObject<UQuest>();
     Quest1->QuestName = "Find the Cube";
     Quest1->QuestDescription = "The player needs to find and return the lost cube.";
@@ -50,7 +47,7 @@ UQuest* AQuestGiver::AssignQuest()
 {
     if (AvailableQuests.Num() > 0)
     {
-        UQuest* AssignedQuest = AvailableQuests[0]; //Assign the first quest for simplicityy
+        UQuest* AssignedQuest = AvailableQuests[0]; //Assign the first quest for simplicity
         AvailableQuests.RemoveAt(0); //Remove it from available quests
         return AssignedQuest;
     }
@@ -61,7 +58,7 @@ UQuest* AQuestGiver::AssignQuest()
     return nullptr; //No quests available
 }
 
-void AQuestGiver::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, //This was taken from some random guy online but it works now
+void AQuestGiver::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, //This was taken from some random guy online, but it works now
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
     bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -96,6 +93,7 @@ void AQuestGiver::RotateToFacePlayer(AActor* PlayerActor)
     SetActorRotation(TargetRotation);
 }
 
+//Spawns the Item around the map
 void AQuestGiver::SpawnBlueprintActorRandomly()
 {
     if (!ActorToSpawn)

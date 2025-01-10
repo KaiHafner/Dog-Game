@@ -24,7 +24,7 @@ public:
 	void StartScentTracking(); //Start tracking scents
 	void StopScentTracking();  //Stop tracking scents
 
-	bool bIsTracking = false; //chekck iss tracking
+	bool bIsTracking = false; //check is tracking
 
 
 private:
@@ -39,14 +39,14 @@ private:
 
 	void RecreatePath();
 
-	UPROPERTY(EditDefaultsOnly, Category = "Visual")
+	UPROPERTY(EditDefaultsOnly, Category = "Trail")
 	UNiagaraSystem* TrailNiagaraEffect;
 
 	//Config the trail 
-	UPROPERTY(EditDefaultsOnly, Category = "Visual")
+	UPROPERTY(EditDefaultsOnly, Category = "Trail")
 	int32 NumTrailPoints = 1000;  //Max Number of points
 
-	UPROPERTY(EditDefaultsOnly, Category = "Visual")
+	UPROPERTY(EditDefaultsOnly, Category = "Trail")
 	float TrailPointSpacing = 100.0f;  //Distance between trail points
 
 	FTimerHandle PathUpdateTimerHandle;

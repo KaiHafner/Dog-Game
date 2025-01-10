@@ -1,7 +1,7 @@
 #include "QuestManager.h"
 #include "QuestTrackerWidget.h"
 
-UQuestManager::UQuestManager()
+UQuestManager::UQuestManager(): QuestTrackerWidget(nullptr)
 {
     PrimaryComponentTick.bCanEverTick = false;
 }
@@ -10,12 +10,14 @@ void UQuestManager::BeginPlay()
 {
     if (QuestTrackerWidgetClass) 
     {
+        //check for player controller
         APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
         if (PlayerController)
         {
             QuestTrackerWidget = CreateWidget<UQuestTrackerWidget>(PlayerController, QuestTrackerWidgetClass);
             if (QuestTrackerWidget)
             {
+                //creates quest widget
                 QuestTrackerWidget->AddToViewport();
             }
         }

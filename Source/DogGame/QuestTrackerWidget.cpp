@@ -1,7 +1,6 @@
 #include "QuestTrackerWidget.h"
 #include "Components/TextBlock.h"
 #include "Quest.h"
-#include "QuestManager.h"
 
 void UQuestTrackerWidget::UpdateUI(UQuest* ActiveQuest)
 {

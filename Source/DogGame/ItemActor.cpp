@@ -7,7 +7,7 @@ AItemActor::AItemActor()
 {
     PrimaryActorTick.bCanEverTick = false;
 
-    // Create and attach the ItemScentComponent
+    //Create & attach ItemScentComponent
     ItemScent = CreateDefaultSubobject<UItemScent>(TEXT("ItemScentComponent"));
     ItemScent->SetupAttachment(RootComponent);
 

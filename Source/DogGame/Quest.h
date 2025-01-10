@@ -19,15 +19,15 @@ class DOGGAME_API UQuest : public UObject
 public:
     UQuest();
 
-    //Quest name
+    //name
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
     FString QuestName;
 
-    //Quest description
+    //description
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
     FString QuestDescription;
 
-    //Quest objective type
+    //objective type
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
     FString ObjectiveType;
 
@@ -35,11 +35,11 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
     FString TargetObject;
 
-    //status of the quest
+    //status
     UPROPERTY(BlueprintReadWrite, Category = "Quest")
     EQuestStatus Status;
 
-    //mark the quest as complete
+    //mark as complete
     UFUNCTION(BlueprintCallable, Category = "Quest")
     void CompleteQuest();
 };

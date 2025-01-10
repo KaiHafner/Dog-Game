@@ -15,7 +15,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scent")
 	FVector ScentLocation;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scent")
 	float ScentStrength;
 

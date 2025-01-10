@@ -105,16 +105,15 @@ void UScentTracking::CreatePathToScent() const
 {
     if (!ClosestScent || !TrailNiagaraEffect) //KAI DO NOT REMOVE THIS FIXES CRASHES WHEN NO SCENTED OBJECT
     {
-        return; //simple fix but slammed head for it....
+        return; 
     }
-    
-    //Get the nav system
     UNavigationSystemV1* NavSys = UNavigationSystemV1::GetCurrent(GetWorld());
     if (!NavSys)
     {
         return;
     }
 
+    
     //Get the starting and target locations
     FVector PlayerLocation = GetOwner()->GetActorLocation();
     FVector TargetLocation = ClosestScent->ScentLocation;
@@ -140,7 +139,7 @@ void UScentTracking::CreatePathToScent() const
     //Spawn Niagara particles along the path
     for (int32 i = 0; i < PathPoints.Num(); ++i)
     {
-        constexpr float ParticleHeightOffset = 50.0f; //constexpr determined at compile time 
+        constexpr float ParticleHeightOffset = 50.0f; //constexpr (determined at compile time)
         FVector TrailPoint = PathPoints[i].Location;
         
         TrailPoint.Z += ParticleHeightOffset; //Particles height offset
@@ -183,9 +182,3 @@ void UScentTracking::CreatePathToScent() const
         }
     }
 }
-
-
-
-
-
-
