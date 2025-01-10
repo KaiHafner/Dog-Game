@@ -50,7 +50,21 @@ void UQuestManager::CompleteQuest(FString QuestName)
         if (Quest && Quest->QuestName == QuestName && Quest->Status == EQuestStatus::InProgress)
         {
             Quest->CompleteQuest();
+            
+            if (QuestTrackerWidget)
+            {
+                QuestTrackerWidget->UpdateUI(Quest);
+            }
+            
             break;
         }
+    }
+}
+
+void UQuestManager::UpdateQuestUI(UQuest* Quest)
+{
+    if (QuestTrackerWidget)
+    {
+        QuestTrackerWidget->UpdateUI(Quest);
     }
 }

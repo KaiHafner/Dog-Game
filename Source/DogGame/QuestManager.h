@@ -28,6 +28,7 @@ public:
     //Check if a quest is complete
     UFUNCTION(BlueprintCallable, Category = "Quest")
     void CompleteQuest(FString QuestName);
+    void UpdateQuestUI(UQuest* Quest);
 
 
     UPROPERTY(BlueprintReadWrite, Category = "UI")
