@@ -35,9 +35,25 @@ void AQuestGiver::BeginPlay()
     Quest3->QuestName = "Find the Dinosaur toy";
     Quest3->QuestDescription = "The player needs to find and return the Dinosaur toy";
 
+    UQuest* Quest4 = NewObject<UQuest>();
+    Quest4->QuestName = "Find the key";
+    Quest4->QuestDescription = "The player needs to find and return the key";
+    
+    UQuest* Quest5 = NewObject<UQuest>();
+    Quest5->QuestName = "Find the Dinosaur toy again!";
+    Quest5->QuestDescription = "The player needs to find and return the Dinosaur toy";
+        
+    UQuest* Quest6 = NewObject<UQuest>();
+    Quest6->QuestName = "Find the squeaky toy";
+    Quest6->QuestDescription = "The player needs to find and return the squeaky toy";
+
     AvailableQuests.Add(Quest1);
     AvailableQuests.Add(Quest2);
     AvailableQuests.Add(Quest3);
+    AvailableQuests.Add(Quest4);
+    AvailableQuests.Add(Quest5);
+    AvailableQuests.Add(Quest6);
+
 
     //Bind the overlap event to the function
     CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AQuestGiver::OnOverlapBegin);
